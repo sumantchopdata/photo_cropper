@@ -189,6 +189,4 @@ def crop_single_person(img, bbox, input_w, input_h, padding=0, filename='cropped
     else:
         print(f"Applied padding   : {current_padding:.2f}")
 
-    cv2.imwrite(f"{filename}_{input_w}_{input_h}_{current_padding:.2f}.jpg",
-                cropped)
     return cropped
