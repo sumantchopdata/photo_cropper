@@ -51,7 +51,7 @@ if uploaded_file is not None:
         bbox,
         input_w,
         input_h,
-        padding,
+        padding
     )
 
     if applied_padding < padding:
