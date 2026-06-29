@@ -46,13 +46,19 @@ if uploaded_file is not None:
     img = cv2.cvtColor(img, cv2.COLOR_RGB2BGR)
 
     bbox = largest_bounding_box(img)
-    cropped = crop_single_person(
+    cropped, applied_padding = crop_single_person(
         img,
         bbox,
         input_w,
         input_h,
         padding,
     )
+
+    if applied_padding < padding:
+        st.info(
+            f"⚠️ The requested padding ({padding:.2f}) could not be achieved. "
+            f"The maximum possible padding for this image is {applied_padding:.2f}."
+        )
 
     col1, col2 = st.columns(2)
 

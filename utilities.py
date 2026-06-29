@@ -189,4 +189,4 @@ def crop_single_person(img, bbox, input_w, input_h, padding=0, filename='cropped
     else:
         print(f"Applied padding   : {current_padding:.2f}")
 
-    return cropped
+    return cropped, current_padding
