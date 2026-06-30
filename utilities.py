@@ -10,7 +10,8 @@ model = YOLO("yolov8n.pt")
 
 def largest_bounding_box(img):
     if img is None:
-        raise("Error: Image not found or unable to load.")
+        print("Error: Image not found or unable to load.")
+        return None
     
     # Run YOLO detection and filter for person class (cls == 0)
     result = model(img)[0]
@@ -89,7 +90,8 @@ def crop_single_person(img, bbox, input_w, input_h, padding=0, filename='cropped
         Cropped image.
     """
     if img is None:
-        raise("Error: Image not found or unable to load.")
+        print("Error: Image not found or unable to load.")
+        return None, None
     
     h, w = img.shape[:2]
     if bbox is not None:
@@ -166,7 +168,8 @@ def crop_single_person(img, bbox, input_w, input_h, padding=0, filename='cropped
         current_padding -= 0.01
 
     else:
-        raise ValueError("Could not find a valid crop.")
+        print("Error: Could not find a valid crop with the chosen aspect ratio and padding.")
+        return None, None
 
     # Fix off-by-one errors caused by rounding
     final_w = crop_x2 - crop_x1
