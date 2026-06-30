@@ -15,14 +15,20 @@ def largest_bounding_box(img):
     # Run YOLO detection and filter for person class (cls == 0)
     result = model(img)[0]
     persons = [box for box in result.boxes if int(box.cls) == 0]
+    print(persons)
 
     # Pick the largest detected person by bounding box area
-    largest = max(
-        persons,
-        key=lambda b: (b.xyxy[0][2] - b.xyxy[0][0]) * (b.xyxy[0][3] - b.xyxy[0][1])
-    )
-    x1, y1, x2, y2 = map(int, largest.xyxy[0])
-    return x1, y1, x2, y2
+    if persons:
+        largest = max(
+            persons,
+            key=lambda b: (b.xyxy[0][2] - b.xyxy[0][0]) * (b.xyxy[0][3] - b.xyxy[0][1])
+        )
+        # if there is no person, 
+        x1, y1, x2, y2 = map(int, largest.xyxy[0])
+        return x1, y1, x2, y2
+    else:
+        print('No person found in the image.')
+        return None
 
 def largest_centered_aspect_ratio(bbox, img_width, img_height):
     """
@@ -86,7 +92,11 @@ def crop_single_person(img, bbox, input_w, input_h, padding=0, filename='cropped
         raise("Error: Image not found or unable to load.")
     
     h, w = img.shape[:2]
-    x1, y1, x2, y2 = bbox
+    if bbox is not None:
+        x1, y1, x2, y2 = bbox
+    else:
+        print('No person found in the image.')
+        return None, None
 
     g = gcd(input_w, input_h)
     input_w //= g

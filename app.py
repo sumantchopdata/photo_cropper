@@ -54,31 +54,35 @@ if uploaded_file is not None:
         padding
     )
 
-    if applied_padding < padding:
-        st.info(
-            f"⚠️ The requested padding ({padding:.2f}) could not be achieved. "
-            f"The maximum possible padding for this image is {applied_padding:.2f}."
+    if applied_padding is not None:
+        if applied_padding < padding:
+            st.info(
+                f"⚠️ The requested padding ({padding:.2f}) could not be achieved. "
+                f"The maximum possible padding for this image is {applied_padding:.2f}."
+            )
+
+        col1, col2 = st.columns(2)
+
+        with col1:
+            st.image(
+                cv2.cvtColor(img, cv2.COLOR_BGR2RGB),
+                caption="Original"
+            )
+
+        with col2:
+            st.image(
+                cv2.cvtColor(cropped, cv2.COLOR_BGR2RGB),
+                caption="Cropped"
+            )
+
+        _, buffer = cv2.imencode(".jpg", cropped)
+
+        st.download_button(
+            "Download",
+            buffer.tobytes(),
+            file_name="cropped.jpg",
+            mime="image/jpeg"
         )
-
-    col1, col2 = st.columns(2)
-
-    with col1:
-        st.image(
-            cv2.cvtColor(img, cv2.COLOR_BGR2RGB),
-            caption="Original"
-        )
-
-    with col2:
-        st.image(
-            cv2.cvtColor(cropped, cv2.COLOR_BGR2RGB),
-            caption="Cropped"
-        )
-
-    _, buffer = cv2.imencode(".jpg", cropped)
-
-    st.download_button(
-        "Download",
-        buffer.tobytes(),
-        file_name="cropped.jpg",
-        mime="image/jpeg"
-    )
+        
+    else:
+        st.info('No person found in the image.')
