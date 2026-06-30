@@ -169,7 +169,7 @@ def crop_single_person(img, bbox, input_w, input_h, padding=0, filename='cropped
 
     else:
         print("Error: Could not find a valid crop with the chosen aspect ratio and padding.")
-        return None, None
+        return None, -1
 
     # Fix off-by-one errors caused by rounding
     final_w = crop_x2 - crop_x1

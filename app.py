@@ -54,7 +54,7 @@ if uploaded_file is not None:
         padding
     )
 
-    if applied_padding is not None:
+    if applied_padding is not None and applied_padding != -1:
         if applied_padding < padding:
             st.info(
                 f"⚠️ The requested padding ({padding:.2f}) could not be achieved. "
@@ -83,6 +83,9 @@ if uploaded_file is not None:
             file_name="cropped.jpg",
             mime="image/jpeg"
         )
-        
+
+    if applied_padding == -1:
+        st.info('Error: Could not find a valid crop with the chosen aspect ratio and padding.')
+    
     else:
         st.info('No person found in the image.')
