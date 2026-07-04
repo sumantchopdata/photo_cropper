@@ -7,9 +7,8 @@ from utilities import largest_bounding_box, crop_single_person
 
 st.title("📸 Smart Photo Cropper")
 
-st.write(
-    "Upload an image and automatically crop it around the person."
-)
+st.write("Upload an image and automatically crop it around the person.")
+st.write("This app works best when the image has a single person has the subject.")
 
 uploaded_file = st.file_uploader(
     "Choose an image",
