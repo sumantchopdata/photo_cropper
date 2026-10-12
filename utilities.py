@@ -2,45 +2,48 @@
 # detect a object in an image and crop a image around them
 # with user defined padding
 
+import cv2
 from math import gcd
 from ultralytics import YOLO
 
 model = YOLO("yolov8n.pt")
 
+
 def detect_bounding_boxes(img, max_number_of_objects=5):
-    '''
-    Detect all objects and return their bounding boxes,
-    sorted by area in descending order.
-    '''
+    """
+    Detect all objects and return their bounding boxes, class names,
+    and confidence scores, sorted by area.
+    """
     if img is None:
         print("Error: Image not found or unable to load.")
-        return None
+        return []
 
-    # Run YOLO detection for all object classes
-    objects = list(model(img)[0].boxes)
+    result = model(img)[0]
+    objects = []
 
-    if objects:
-        # Sort bounding boxes by area, largest first
-        objects.sort(
-            key=lambda b: (
-                (b.xyxy[0][2] - b.xyxy[0][0]) *
-                (b.xyxy[0][3] - b.xyxy[0][1])
-            ),
-            reverse=True
-        )
+    for box in result.boxes:
+        x1, y1, x2, y2 = map(int, box.xyxy[0])
+        class_id = int(box.cls[0])
 
-        # Return coordinates as a list of tuples if there are less than max_number_of_objects objects, else return the top max_number_of_objects largest objects
-        if len(objects) > max_number_of_objects:
-            objects = objects[:max_number_of_objects]
+        objects.append({
+            "bbox": (x1, y1, x2, y2),
+            "class_name": model.names[class_id],
+            "confidence": float(box.conf[0])
+        })
 
-        return [
-            tuple(map(int, box.xyxy[0]))
-            for box in objects
-        ]
+    if len(objects) > max_number_of_objects:
+        objects = objects[:max_number_of_objects]
 
-    else:
-        print('No object found in the image.')
-        return [(0, 0, img.shape[1], img.shape[0])]
+    # Sort by bounding-box area, largest first
+    objects.sort(
+        key=lambda obj: (
+            (obj["bbox"][2] - obj["bbox"][0]) *
+            (obj["bbox"][3] - obj["bbox"][1])
+        ),
+        reverse=True
+    )
+
+    return objects
 
 
 def largest_centered_aspect_ratio(bbox, img_width, img_height):
@@ -241,3 +244,68 @@ def bbox_list_to_image(bbox_list, img):
         cropped_img = img[y1:y2, x1:x2]
         images.append(cropped_img)
     return images
+
+
+def draw_numbered_bounding_boxes(img, bbox_list):
+    """
+    Draw numbered bounding boxes with class names.
+    """
+    annotated_img = img.copy()
+
+    label_dict = {}
+    for i, obj in enumerate(bbox_list):
+        x1, y1, x2, y2 = obj["bbox"]
+        class_name = obj["class_name"]
+
+        # Label: object number and detected class
+        label = f"{i + 1}: {class_name}"
+
+        # Draw bounding box
+        cv2.rectangle(
+            annotated_img,
+            (x1, y1),
+            (x2, y2),
+            (0, 255, 0),
+            2
+        )
+
+        # Calculate label dimensions
+        font = cv2.FONT_HERSHEY_SIMPLEX
+        font_scale = 0.6
+        thickness = 2
+
+        (text_w, text_h), baseline = cv2.getTextSize(
+            label, font, font_scale, thickness
+        )
+
+        # Position label above the box when possible
+        label_y = y1 - 8
+
+        # Shift below the box if not enough space above
+        if label_y - text_h - baseline < 0:
+            label_y = y1 + text_h + baseline + 8 
+
+        # Draw filled background behind label
+        cv2.rectangle(
+            annotated_img,
+            (x1, label_y - text_h - baseline),
+            (x1 + text_w, label_y + baseline),
+            (0, 255, 0),
+            -1
+        )
+
+        # Draw dark text
+        cv2.putText(
+            annotated_img,
+            label,
+            (x1, label_y),
+            font,
+            font_scale,
+            (0, 0, 0),
+            thickness,
+            cv2.LINE_AA
+        )
+
+        label_dict[i] = class_name.title()
+
+    return annotated_img, label_dict
