@@ -15,13 +15,13 @@ A simple **Streamlit** interface allows users to upload an image, choose an aspe
 
 ## Features
 
-* 🎯 Automatic person detection using YOLOv8
-* 📐 Supports any aspect ratio (e.g. 1:1, 4:5, 9:16, 16:9, custom)
-* 👤 Keeps the detected subject centred
-* 🖼️ Preserves the requested aspect ratio exactly
-* ➕ User-adjustable padding around the subject
-* 🔄 Automatically reduces padding when the requested value is impossible while keeping the subject visible
-* 📥 Download the cropped image directly from the web app
+* Automatic person detection using YOLOv8
+* Supports any aspect ratio (e.g. 1:1, 4:5, 9:16, 16:9, custom)
+* Keeps the detected subject centred
+* Preserves the requested aspect ratio exactly
+* User-adjustable padding around the subject
+* Automatically reduces padding when the requested value is impossible while keeping the subject visible
+* Download the cropped image directly from the web app
 
 ---
 
