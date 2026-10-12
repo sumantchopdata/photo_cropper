@@ -3,12 +3,12 @@ import cv2
 import numpy as np
 from PIL import Image
 
-from utilities import largest_bounding_box, crop_single_person
+from utilities import detect_bounding_boxes, crop_single_object, bbox_list_to_image
 
 st.title("📸 Smart Photo Cropper")
 
 st.write(
-    "Upload an image and automatically crop it around the person."
+    "Upload an image and automatically crop it around the object."
 )
 
 uploaded_file = st.file_uploader(
@@ -45,21 +45,29 @@ if uploaded_file is not None:
     img = np.array(Image.open(uploaded_file))
     img = cv2.cvtColor(img, cv2.COLOR_RGB2BGR)
 
-    bbox = largest_bounding_box(img)
-    cropped, applied_padding = crop_single_person(
-        img,
-        bbox,
-        input_w,
-        input_h,
-        padding
-    )
+    bbox_list = detect_bounding_boxes(img)
+    
+    # if there are multiple objects detected, we will ask the user to select one of them
 
-    if applied_padding is not None and applied_padding != -1:
-        if applied_padding < padding:
-            st.info(
-                f"⚠️ The requested padding ({padding:.2f}) could not be achieved. "
-                f"The maximum possible padding for this image is {applied_padding:.2f}."
-            )
+    if len(bbox_list) > 1:
+        bbox = st.selectbox("Select an object as the main subject. This will be present in the center of the final image.",
+                            bbox_list_to_image(bbox_list, img))
+
+    for bbox in bbox_list:
+        cropped, applied_padding = crop_single_object(
+            img,
+            bbox,
+            input_w,
+            input_h,
+            padding
+        )
+
+        if applied_padding is not None and applied_padding != -1:
+            if applied_padding < padding:
+                st.info(
+                    f"⚠️ The requested padding ({padding:.2f}) could not be achieved. "
+                    f"The maximum possible padding for this image ({applied_padding:.2f}) has been applied."
+                )
 
         col1, col2 = st.columns(2)
 
@@ -84,8 +92,8 @@ if uploaded_file is not None:
             mime="image/jpeg"
         )
 
-    if applied_padding == -1:
-        st.info('Error: Could not find a valid crop with the chosen aspect ratio and padding.')
-    
-    else:
-        st.info('No person found in the image.')
+        if applied_padding == -1:
+            st.info('Error: Could not find a valid crop with the chosen aspect ratio and padding.')
+        
+        else:
+            st.info('No object found in the image.')

@@ -1,43 +1,55 @@
 #%%
-# detect a person in an image with one person
-# and crop a image around them with user defined padding
+# detect a object in an image and crop a image around them
+# with user defined padding
 
-import cv2
 from math import gcd
 from ultralytics import YOLO
 
 model = YOLO("yolov8n.pt")
 
-def largest_bounding_box(img):
+def detect_bounding_boxes(img, max_number_of_objects=5):
+    '''
+    Detect all objects and return their bounding boxes,
+    sorted by area in descending order.
+    '''
     if img is None:
         print("Error: Image not found or unable to load.")
         return None
-    
-    # Run YOLO detection and filter for person class (cls == 0)
-    result = model(img)[0]
-    persons = [box for box in result.boxes if int(box.cls) == 0]
-    print(persons)
 
-    # Pick the largest detected person by bounding box area
-    if persons:
-        largest = max(
-            persons,
-            key=lambda b: (b.xyxy[0][2] - b.xyxy[0][0]) * (b.xyxy[0][3] - b.xyxy[0][1])
+    # Run YOLO detection for all object classes
+    objects = list(model(img)[0].boxes)
+
+    if objects:
+        # Sort bounding boxes by area, largest first
+        objects.sort(
+            key=lambda b: (
+                (b.xyxy[0][2] - b.xyxy[0][0]) *
+                (b.xyxy[0][3] - b.xyxy[0][1])
+            ),
+            reverse=True
         )
-        # if there is no person, 
-        x1, y1, x2, y2 = map(int, largest.xyxy[0])
-        return x1, y1, x2, y2
+
+        # Return coordinates as a list of tuples if there are less than max_number_of_objects objects, else return the top max_number_of_objects largest objects
+        if len(objects) > max_number_of_objects:
+            objects = objects[:max_number_of_objects]
+
+        return [
+            tuple(map(int, box.xyxy[0]))
+            for box in objects
+        ]
+
     else:
-        print('No person found in the image.')
-        return None
+        print('No object found in the image.')
+        return [(0, 0, img.shape[1], img.shape[0])]
+
 
 def largest_centered_aspect_ratio(bbox, img_width, img_height):
     """
-    Calculate the largest possible aspect ratio possible for an image.
+    Calculate the largest possible aspect ratio possible for a given bounding box in an image.
 
     Parameters
     ----------
-    bbox : tuple (x1, y1, x2, y2) coordinates of the person's bounding box
+    bbox : tuple (x1, y1, x2, y2) coordinates of the object's bounding box
     img_width and img_height : int
 
     Returns
@@ -65,18 +77,19 @@ def largest_centered_aspect_ratio(bbox, img_width, img_height):
 
     return aspect_ratio
 
-def crop_single_person(img, bbox, input_w, input_h, padding=0, filename='cropped_person'):
+
+def crop_single_object(img, bbox, input_w, input_h, padding=0):
     """
-    Crop an image around a single person while maintaining a specified
+    Crop an image around a single object while maintaining a specified
     aspect ratio and keeping the subject centered.
-    A user defined but maximum possible padding is applied around the person.
+    A user defined but maximum possible padding is applied around the object.
 
     Parameters
     ----------
     img : np.ndarray
         Image read by cv2.imread().
     bbox : tuple
-        (x1, y1, x2, y2) coordinates of the person.
+        (x1, y1, x2, y2) coordinates of the object.
     input_w : int
         Desired width ratio.
     input_h : int
@@ -97,7 +110,7 @@ def crop_single_person(img, bbox, input_w, input_h, padding=0, filename='cropped
     if bbox is not None:
         x1, y1, x2, y2 = bbox
     else:
-        print('No person found in the image.')
+        print('No object found in the image.')
         return None, None
 
     g = gcd(input_w, input_h)
@@ -111,11 +124,11 @@ def crop_single_person(img, bbox, input_w, input_h, padding=0, filename='cropped
     while current_padding >= 0:
 
         # Padded bounding box dimensions
-        person_w = x2 - x1
-        person_h = y2 - y1
+        object_w = x2 - x1
+        object_h = y2 - y1
 
-        pad_x = current_padding * person_w
-        pad_y = current_padding * person_h
+        pad_x = current_padding * object_w
+        pad_y = current_padding * object_h
 
         px1 = x1 - pad_x
         px2 = x2 + pad_x
@@ -203,3 +216,28 @@ def crop_single_person(img, bbox, input_w, input_h, padding=0, filename='cropped
         print(f"Applied padding   : {current_padding:.2f}")
 
     return cropped, current_padding
+
+
+def bbox_list_to_image(bbox_list, img):
+    """
+    Convert a list of bounding boxes to a list of images for display in a selectbox.
+    To be used when user is asked to select one of multiple detected objects as the main subject.
+
+    Parameters
+    ----------
+    bbox_list : list of tuples
+        List of bounding boxes (x1, y1, x2, y2).
+    img : np.ndarray
+        Original image.
+
+    Returns
+    -------
+    images : list of np.ndarray
+        List of cropped images corresponding to the bounding boxes.
+    """
+    images = []
+    for bbox in bbox_list:
+        x1, y1, x2, y2 = bbox
+        cropped_img = img[y1:y2, x1:x2]
+        images.append(cropped_img)
+    return images
