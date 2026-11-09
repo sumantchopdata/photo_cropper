@@ -31,10 +31,7 @@ def detect_bounding_boxes(img, max_number_of_objects=5):
             "confidence": float(box.conf[0])
         })
 
-    if len(objects) > max_number_of_objects:
-        objects = objects[:max_number_of_objects]
-
-    # Sort by bounding-box area, largest first
+    # we sort the objects first by area and then we keep the top max_number_of_objects
     objects.sort(
         key=lambda obj: (
             (obj["bbox"][2] - obj["bbox"][0]) *
@@ -42,6 +39,9 @@ def detect_bounding_boxes(img, max_number_of_objects=5):
         ),
         reverse=True
     )
+
+    if len(objects) > max_number_of_objects:
+        objects = objects[:max_number_of_objects]
 
     return objects
 
@@ -81,7 +81,7 @@ def largest_centered_aspect_ratio(bbox, img_width, img_height):
     return aspect_ratio
 
 
-def crop_single_object(img, bbox, input_w, input_h, padding=0):
+def crop_single_object(img, bbox, input_w, input_h, padding=0, return_crop_coords=False):
     """
     Crop an image around a single object while maintaining a specified
     aspect ratio and keeping the subject centered.
@@ -107,14 +107,14 @@ def crop_single_object(img, bbox, input_w, input_h, padding=0):
     """
     if img is None:
         print("Error: Image not found or unable to load.")
-        return None, None
+        return (None, None, None) if return_crop_coords else (None, None)
     
     h, w = img.shape[:2]
     if bbox is not None:
         x1, y1, x2, y2 = bbox
     else:
         print('No object found in the image.')
-        return None, None
+        return (None, None, None) if return_crop_coords else (None, None)
 
     g = gcd(input_w, input_h)
     input_w //= g
@@ -185,7 +185,7 @@ def crop_single_object(img, bbox, input_w, input_h, padding=0):
 
     else:
         print("Error: Could not find a valid crop with the chosen aspect ratio and padding.")
-        return None, -1
+        return (None, -1, None) if return_crop_coords else (None, -1)
 
     # Fix off-by-one errors caused by rounding
     final_w = crop_x2 - crop_x1
@@ -217,6 +217,9 @@ def crop_single_object(img, bbox, input_w, input_h, padding=0):
         print(f"Applied padding   : {current_padding:.2f} (maximum possible)")
     else:
         print(f"Applied padding   : {current_padding:.2f}")
+
+    if return_crop_coords:
+        return cropped, current_padding, (crop_x1, crop_y1, crop_x2, crop_y2)
 
     return cropped, current_padding
 

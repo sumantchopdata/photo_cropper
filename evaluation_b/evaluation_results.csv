@@ -1,0 +1,71 @@
+ID,Primary_Category,Reviewed,Intended_Subject_Detected,Within_Top_10,Usable_Bounding_Box,Selected_Detection_Number,Detected_Class,Confidence,BBox
+1,Single prominient subject,TRUE,TRUE,TRUE,TRUE,1,person,0.922062457,"(419, 194, 862, 1125)"
+2,Multiple possible subjects,TRUE,TRUE,TRUE,TRUE,1,person,0.834013283,"(515, 163, 791, 1225)"
+3,Multiple possible subjects,TRUE,TRUE,TRUE,TRUE,2,sheep,0.740650535,"(327, 312, 605, 598)"
+4,Single prominient subject,TRUE,TRUE,TRUE,TRUE,1,person,0.884286225,"(791, 315, 972, 770)"
+5,Multiple possible subjects,TRUE,TRUE,TRUE,TRUE,2,person,0.406535059,"(288, 919, 1005, 1617)"
+6,Difficult subject detection,TRUE,FALSE,FALSE,FALSE,,,,
+7,Single prominient subject,TRUE,TRUE,TRUE,TRUE,1,bus,0.937380731,"(237, 201, 855, 501)"
+8,Single prominient subject,TRUE,TRUE,TRUE,TRUE,3,cat,0.647252142,"(532, 93, 1014, 723)"
+9,Single prominient subject,TRUE,TRUE,TRUE,TRUE,1,bench,0.453928471,"(386, 659, 991, 727)"
+10,Single unknown subject,TRUE,FALSE,FALSE,FALSE,,,,
+11,Single unknown subject,TRUE,FALSE,FALSE,FALSE,,,,
+12,Multiple possible subjects,TRUE,TRUE,TRUE,TRUE,6,cup,0.889735341,"(464, 161, 575, 307)"
+13,Multiple possible subjects,TRUE,TRUE,TRUE,TRUE,2,dog,0.863020122,"(38, 519, 601, 1224)"
+14,Single prominient subject,TRUE,TRUE,TRUE,TRUE,1,dog,0.916497707,"(355, 164, 735, 553)"
+15,Single prominient subject,TRUE,TRUE,TRUE,TRUE,1,cat,0.944322109,"(310, 642, 519, 1056)"
+16,Multiple possible subjects,TRUE,TRUE,TRUE,TRUE,2,person,0.920787513,"(995, 487, 1606, 1172)"
+17,Multiple possible subjects,TRUE,TRUE,TRUE,TRUE,1,person,0.935621262,"(315, 166, 707, 719)"
+18,Multiple possible subjects,TRUE,TRUE,TRUE,FALSE,8,person,0.425705165,"(436, 396, 517, 787)"
+19,Difficult subject detection,TRUE,TRUE,TRUE,TRUE,1,bench,0.277241856,"(60, 461, 211, 552)"
+20,Challenging crop geometry,TRUE,TRUE,TRUE,TRUE,4,person,0.698324263,"(0, 228, 54, 452)"
+21,Challenging crop geometry,TRUE,FALSE,FALSE,FALSE,,,,
+22,Multiple possible subjects,TRUE,TRUE,TRUE,TRUE,2,person,0.263586015,"(658, 367, 1014, 796)"
+23,Multiple possible subjects,TRUE,TRUE,TRUE,FALSE,1,person,0.778114259,"(575, 48, 675, 293)"
+24,Single prominient subject,TRUE,TRUE,TRUE,FALSE,1,boat,0.844736934,"(464, 192, 1289, 500)"
+25,Difficult subject detection,TRUE,FALSE,FALSE,FALSE,,,,
+26,Difficult subject detection,TRUE,TRUE,TRUE,TRUE,2,orange,0.422148198,"(230, 241, 419, 433)"
+27,Single prominient subject,TRUE,TRUE,TRUE,TRUE,1,elephant,0.939453125,"(106, 77, 452, 563)"
+28,Multiple possible subjects,TRUE,TRUE,TRUE,TRUE,3,elephant,0.883014798,"(573, 298, 852, 713)"
+29,Difficult subject detection,TRUE,TRUE,TRUE,FALSE,2,zebra,0.258259267,"(312, 134, 893, 576)"
+30,Multiple possible subjects,TRUE,TRUE,TRUE,TRUE,1,cup,0.937700868,"(39, 0, 293, 356)"
+31,Multiple possible subjects,TRUE,TRUE,TRUE,TRUE,4,person,0.442381084,"(726, 150, 754, 218)"
+32,Single prominient subject,TRUE,TRUE,TRUE,TRUE,1,person,0.94244957,"(639, 286, 1055, 865)"
+33,Single prominient subject,TRUE,TRUE,TRUE,TRUE,1,person,0.940356374,"(478, 228, 866, 957)"
+34,Single prominient subject,TRUE,TRUE,TRUE,TRUE,1,person,0.928194523,"(949, 471, 2086, 1992)"
+35,Single prominient subject,TRUE,TRUE,TRUE,TRUE,1,person,0.81064558,"(558, 191, 1056, 747)"
+36,Single prominient subject,TRUE,TRUE,TRUE,TRUE,1,person,0.936305463,"(179, 31, 592, 428)"
+37,Single prominient subject,TRUE,TRUE,TRUE,TRUE,1,person,0.920592546,"(0, 41, 225, 271)"
+38,Single prominient subject,TRUE,TRUE,TRUE,TRUE,1,person,0.911553621,"(315, 98, 950, 775)"
+39,Single prominient subject,TRUE,TRUE,TRUE,TRUE,1,person,0.926507711,"(125, 319, 619, 949)"
+40,Cluttered or crowded scenes,TRUE,TRUE,TRUE,TRUE,3,person,0.685027778,"(488, 358, 552, 491)"
+41,Multiple possible subjects,TRUE,TRUE,TRUE,TRUE,2,person,0.840181887,"(638, 138, 1140, 847)"
+42,Multiple possible subjects,TRUE,TRUE,TRUE,TRUE,1,person,0.869974494,"(463, 84, 1208, 1078)"
+43,Single prominient subject,TRUE,TRUE,TRUE,TRUE,1,person,0.947422981,"(336, 138, 648, 635)"
+44,Difficult subject detection,TRUE,TRUE,TRUE,TRUE,5,person,0.638788223,"(528, 381, 590, 533)"
+45,Multiple possible subjects,TRUE,FALSE,FALSE,FALSE,,,,
+46,Difficult subject detection,TRUE,TRUE,TRUE,TRUE,5,dog,0.783758938,"(229, 418, 280, 459)"
+47,Difficult subject detection,TRUE,FALSE,FALSE,FALSE,,,,
+48,Difficult subject detection,TRUE,TRUE,TRUE,TRUE,1,person,0.906834781,"(737, 253, 1367, 1069)"
+49,Multiple possible subjects,TRUE,TRUE,TRUE,TRUE,1,truck,0.788300157,"(329, 417, 524, 501)"
+50,Multiple possible subjects,TRUE,TRUE,TRUE,TRUE,5,boat,0.284313291,"(474, 301, 522, 355)"
+51,Single prominient subject,TRUE,TRUE,TRUE,TRUE,3,person,0.817172229,"(48, 248, 254, 447)"
+52,Difficult subject detection,TRUE,TRUE,TRUE,TRUE,3,person,0.818473816,"(300, 394, 325, 462)"
+53,Multiple possible subjects,TRUE,TRUE,TRUE,TRUE,2,boat,0.737203836,"(856, 194, 916, 231)"
+54,Difficult subject detection,TRUE,TRUE,TRUE,TRUE,1,person,0.728063941,"(590, 321, 618, 402)"
+55,Difficult subject detection,TRUE,FALSE,FALSE,FALSE,,,,
+56,Difficult subject detection,TRUE,TRUE,TRUE,TRUE,1,car,0.913361728,"(785, 520, 959, 693)"
+57,Difficult subject detection,TRUE,TRUE,TRUE,FALSE,9,person,0.311647773,"(78, 256, 103, 292)"
+58,Difficult subject detection,TRUE,FALSE,FALSE,FALSE,,,,
+59,Cluttered or crowded scenes,TRUE,FALSE,FALSE,FALSE,,,,
+60,Challenging crop geometry,TRUE,TRUE,TRUE,TRUE,6,person,0.690153956,"(216, 395, 309, 551)"
+61,Cluttered or crowded scenes,TRUE,TRUE,FALSE,TRUE,11,car,0.580724418,"(351, 455, 398, 484)"
+62,Cluttered or crowded scenes,TRUE,TRUE,TRUE,TRUE,9,person,0.590378523,"(762, 91, 818, 229)"
+63,Cluttered or crowded scenes,TRUE,TRUE,FALSE,TRUE,12,person,0.393973708,"(995, 857, 1076, 1020)"
+64,Cluttered or crowded scenes,TRUE,TRUE,FALSE,TRUE,20,person,0.518791318,"(840, 293, 919, 379)"
+65,Cluttered or crowded scenes,TRUE,TRUE,TRUE,FALSE,5,person,0.387985319,"(696, 544, 759, 617)"
+66,Cluttered or crowded scenes,TRUE,TRUE,FALSE,TRUE,12,person,0.54959178,"(486, 172, 546, 314)"
+67,Challenging crop geometry,TRUE,TRUE,TRUE,TRUE,9,person,0.730708599,"(866, 47, 931, 180)"
+68,Cluttered or crowded scenes,TRUE,FALSE,FALSE,FALSE,,,,
+69,Multiple possible subjects,TRUE,TRUE,TRUE,TRUE,4,traffic light,0.349441826,"(386, 259, 408, 294)"
+70,Single unknown subject,TRUE,FALSE,FALSE,FALSE,,,,
